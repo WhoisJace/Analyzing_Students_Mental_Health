@@ -1,0 +1,190 @@
+SELECT * 
+FROM students;
+
+-- Exploratory analysis of Studnet mental health data.
+SELECT inter_dom, COUNT(*) AS total_records
+FROM students
+GROUP BY inter_dom
+
+SELECT DISTINCT inter_dom, COUNT(inter_dom) AS domesticinternationalcount
+FROM students
+WHERE inter_dom IS NOT NULL
+GROUP BY inter_dom
+
+SELECT DISTINCT gender, COUNT(gender) AS gendercount
+FROM students
+WHERE gender IS NOT NULL
+GROUP BY gender
+
+SELECT DISTINCT academic, COUNT(academic) AS academiccount
+FROM students
+WHERE academic IS NOT NULL
+GROUP BY academic
+
+SELECT DISTINCT age, COUNT(age) AS agecount
+FROM students
+WHERE age IS NOT NULL
+GROUP BY age
+ORDER BY age
+
+SELECT DISTINCT stay, COUNT(stay) AS staycount
+FROM students
+WHERE stay IS NOT NULL
+GROUP BY stay
+ORDER BY stay
+
+SELECT DISTINCT stay, COUNT(stay) AS staycount
+FROM students
+WHERE stay IS NOT NULL
+GROUP BY stay
+ORDER BY stay
+
+SELECT DISTINCT tosc, COUNT(tosc) AS tosccount
+FROM students
+WHERE tosc IS NOT NULL
+GROUP BY tosc
+ORDER BY tosc
+
+SELECT DISTINCT toas, COUNT(toas) AS toascount
+FROM students
+WHERE toas IS NOT NULL
+GROUP BY toas
+ORDER BY toas
+
+SELECT DISTINCT japanese_cate, COUNT(japanese_cate) AS japanesecount
+FROM students
+WHERE japanese_cate IS NOT NULL
+GROUP BY Japanese_cate
+ORDER BY japanese_cate
+
+SELECT DISTINCT english_cate, COUNT(english_cate) AS englishcount
+FROM students
+WHERE english_cate IS NOT NULL
+GROUP BY english_cate
+ORDER BY english_cate
+
+select *
+from students
+where inter_dom = 'Inter'
+
+select *
+from students
+where inter_dom = 'Dom'
+
+select *
+from students
+where inter_dom is null
+
+select ROUND(avg(toas),2)
+from students
+
+select ROUND(avg(todep),2)
+from students
+
+select ROUND(avg(age),2)
+from students
+
+select ROUND(avg(stay),2)
+from students
+
+SELECT MAX(japanese), MIN(japanese), ROUND(AVG(japanese),2)
+FROM students
+WHERE japanese IS NOT NULL;
+
+
+Select MAX(english), MIN(english), ROUND(AVG(english),2)
+from students
+WHERE english IS NOT NULL
+ 
+--Summary statistics of the diagnostics scores for all students.
+
+Select MAX(tosc) AS MAX, MIN(tosc) AS MIN, ROUND(AVG(tosc),2) AS AVG
+from students
+WHERE tosc IS NOT NULL
+
+Select MAX(apd) AS MAX, MIN(apd) AS MIN, ROUND(AVG(apd),2) AS AVG
+from students
+WHERE apd IS NOT NULL
+
+Select MAX(ahome) AS MAX, MIN(ahome) AS MIN, ROUND(AVG(ahome),2) AS AVG
+from students
+WHERE ahome IS NOT NULL
+
+Select MAX(aph) AS MAX, MIN(aph) AS MIN, ROUND(AVG(aph),2) AS AVG
+from students
+WHERE aph IS NOT NULL
+
+Select MAX(afear) AS MAX, MIN(afear) AS MIN, ROUND(AVG(afear),2) AS AVG
+from students
+WHERE afear IS NOT NULL
+
+Select MAX(acs) AS MAX, MIN(acs) AS MIN, ROUND(AVG(acs),2) AS AVG
+from students
+WHERE acs IS NOT NULL
+
+Select MAX(aguilt) AS MAX, MIN(aguilt) AS MIN, ROUND(AVG(aguilt),2) AS AVG
+from students
+WHERE aguilt IS NOT NULL
+
+Select MAX(amiscell) AS MAX, MIN(amiscell) AS MIN, ROUND(AVG(amiscell),2) AS AVG
+from students
+WHERE amiscell IS NOT NULL
+
+Select MAX(toas) AS MAX, MIN(toas) AS MIN, ROUND(AVG(toas),2) AS AVG
+from students
+WHERE toas IS NOT NULL
+
+Select MAX(tosc) AS MAX, MIN(tosc) AS MIN, ROUND(AVG(tosc),2) AS AVG
+from students
+WHERE toas IS NOT NULL
+
+Select MAX(todep) AS MAX, MIN(todep) AS MIN, ROUND(AVG(todep),2) AS AVG
+from students
+WHERE toas IS NOT NULL
+
+--Summarizing the data for international students only.
+
+select MAX(tosc) AS max_tosc_inter, MAX(apd) AS max_apd_inter, MAX(ahome) AS max_ahome_inter, MAX(aph) AS max_aph_inter, MAX(afear) AS max_afear_inter, MAX(acs) AS max_acs_inter, max(aguilt) as max_aguilt_inter, max(amiscell) AS max_amiscell_inter, max(toas) AS max_toas_inter 
+from (select *
+from students
+where inter_dom = 'Inter') AS subquery
+
+select Min(tosc) AS min_tosc_inter, Min(apd) AS min_apd_inter, Min(ahome) AS min_ahome_inter, Min(aph) AS min_aph_inter, Min(afear) AS min_afear_inter, Min(acs) AS min_acs_inter, min(aguilt) as min_aguilt_inter, min(amiscell) AS min_amiscell_inter, min(toas) AS min_toas_inter
+from (select *
+from students
+where inter_dom = 'Inter') AS subquery
+
+select Round(Avg(tosc),2) AS avg_tosc_inter, round(avg(apd),2) AS avg_apd_inter, round(avg(ahome),2) AS avg_ahome_inter, round(avg(aph),2) AS avg_aph_inter, round(avg(afear),2) AS avg_afear_inter, round(avg(acs),2)AS avg_acs_inter, round(avg(aguilt),2) as avg_aguilt_inter, round(avg(amiscell),2) AS avg_amiscell_inter, round(avg(toas),2) AS avg_toas_inter, round(avg(todep),2) AS avg_todep_inter
+from (select *
+from students
+where inter_dom = 'Inter') AS subquery
+
+-- The impact of length of stay.
+SELECT 
+    stay AS stay_in_years, ROUND(AVG(todep), 2) AS average_depression_score, 
+    CASE
+        WHEN ROUND(AVG(todep), 2) > 8 THEN 'Above Average'
+        WHEN ROUND(AVG(todep), 2) < 8 THEN 'Below Average' 
+        WHEN ROUND(AVG(todep), 2) = 8 THEN 'Equal' 
+        ELSE 'Unknown' 
+    END AS result, 
+	ROUND(AVG(tosc), 2) AS average_social_connectedness_score, 
+	CASE
+        WHEN ROUND(AVG(tosc), 2) > 37 THEN 'Above Average'
+        WHEN ROUND(AVG(tosc), 2) < 37 THEN 'Below Average' 
+        WHEN ROUND(AVG(tosc), 2) = 37 THEN 'Equal' 
+        ELSE 'Unknown' 
+    END AS result,
+	ROUND(AVG(toas), 2) AS average_acculturative_stress_score,
+	 CASE
+        WHEN ROUND(AVG(toas), 2) > 75 THEN 'Above Average'
+        WHEN ROUND(AVG(toas), 2) < 75 THEN 'Below Average' 
+        WHEN ROUND(AVG(toas), 2) = 75 THEN 'Equal' 
+        ELSE 'Unknown'
+	END AS result
+FROM students
+WHERE inter_dom = 'Inter'
+GROUP BY stay
+ORDER BY stay DESC;
+
+ 
